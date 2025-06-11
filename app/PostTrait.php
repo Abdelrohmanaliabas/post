@@ -11,6 +11,7 @@ trait PostTrait
         return Post::with('user')->paginate(10);
     }
 
+
     public function getPostById($id)
     {
         return Post::findOrFail($id);
