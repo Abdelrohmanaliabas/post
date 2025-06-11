@@ -4,98 +4,85 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
-use Illuminate\Http\Request;
-use App\Models\Post;
 use App\Models\User;
+use App\PostTrait;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use PostTrait;
+
     public function index()
     {
-        $posts = Post::all();
+        $posts = $this->getAllposts();
+
         return view('posts.index', [
             'posts' => $posts
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $users = User::all();
+
         return view('posts.create', [
             'users' => $users
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StorePost $request)
     {
-        $request->validated();
-        Post::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'user_id' => $request->user_id,
-        ]);
+        $data = $request->validated();
 
-        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
+        $this->createPost($data);
+
+        return $this->redirectToIndex();
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->getPostById($id);
+
         return view('posts.show', [
             'post' => $post
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->getPostById($id);
+
         $users = User::all();
+
         return view('posts.edit', [
             'post' => $post,
             'users' => $users
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(UpdatePost $request, string $id)
     {
 
         $request->validated();
-        $post = Post::findOrFail($id);
-        $post->update([
-            'title' => $request->title,
-            'content' => $request->content,
-            'user_id' => $request->user_id,
-        ]);
 
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+        $data = $request->all();
+
+        $this->updatePost($id, $data);
+
+        return $this->redirectToIndex();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->getPostById($id);
+
         $post->delete();
 
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        return $this->redirectToIndex();
     }
 }
