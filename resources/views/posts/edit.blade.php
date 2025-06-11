@@ -1,10 +1,37 @@
 @extends('layouts.postsLayout')
+
 @section('content')
-    <div class="mb-3">
-        <label for="formGroupExampleInput" class="form-label">Example label</label>
-        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
-    </div>
-    <div class="mb-3">
-        <label for="formGroupExampleInput2" class="form-label">Another label</label>
-        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input placeholder"></div>
+    <form action="{{ route('posts.update') }}" method="POST">
+        @csrf
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Post Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="{{ $post->title     }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="content" class="form-label">Post Content</label>
+            <input type="text" class="form-control" id="content" name="content" placeholder="{{ $post->content }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="user_id" class="form-label">Author</label>
+            <select class="form-select" id="user_id" name="user_id">
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}" {{ $user->id == $post->user_id ? 'selected' : '' }}>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
+            </select>
+
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            edit Post
+        </button>
+
+        <a href="{{ route('posts.index') }}" class="btn btn-danger">
+            Cancel
+        </a>
+    </form>
 @endsection

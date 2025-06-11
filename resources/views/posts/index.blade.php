@@ -1,11 +1,11 @@
 
 @extends('layouts.postsLayout')
-@section( 'content')     
+@section('content')     
      <center>
             <button type="button" class="btn btn-success" onclick="window.location='{{ route('posts.create') }}'">
                 Create new post
             </button>
-            
+
         </center>
     <table class="table m-5">
         <thead>
@@ -18,30 +18,33 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>java</td>
-                <td>Ahmed</td>
-                <td>2023-10-01</td>
-                <td>
-                    <button type="button" class="btn btn-info" onclick="window.location='{{ route('posts.show' , 1) }}'">
-                       View
-                    </button>
-                    <button type="button" class="btn btn-warning" onclick="window.location='{{ route('posts.edit') }}'">
-                        edit
-                    </button>
-                    <form action="{{ route('posts.delete') }}" method="POST" style="display: inline;">
-                        @csrf
-                        @method('DELETE')
-                    
-                        <button type="submit" class="btn btn-danger">
-                            Delete
-                        </button>
-                    </form>
-                    
-                </td>
-            </tr>
-           
+
+            @foreach ($posts as $post)
+
+                <tr>
+                    <th scope="row">{{ $post->id }}</th>
+                    <td>{{ $post->title }}</td>
+                    <td>{{ $post->user->name }}</td>
+                    <td>{{ $post->created_at }}</td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-info">View</a>
+
+                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">Edit</a>
+
+                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure?');"
+                                style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <input type="submit" class="btn btn-danger" value="Delete">                     </form>
+
+                        </div>
+                    </td>
+
+                </tr>
+            @endforeach
+
+
         </tbody>
         </table>
 @endsection
