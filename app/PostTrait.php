@@ -8,7 +8,7 @@ trait PostTrait
 {
     public function getAllposts()
     {
-        return Post::all();
+        return Post::with('user')->paginate(10);
     }
 
     public function getPostById($id)
