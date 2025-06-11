@@ -1,17 +1,17 @@
 @extends('layouts.postsLayout')
 
 @section('content')
-    <form action="{{ route('posts.update') }}" method="POST">
+    <form action="{{ route('posts.update', $post->id) }}" method="POST">
         @csrf
-
+        @method('PUT')
         <div class="mb-3">
             <label for="title" class="form-label">Post Title</label>
-            <input type="text" class="form-control" id="title" name="title" placeholder="{{ $post->title     }}" required>
+            <input type="text" class="form-control" id="title" name="title" value="{{ $post->title     }}" required>
         </div>
 
         <div class="mb-3">
             <label for="content" class="form-label">Post Content</label>
-            <input type="text" class="form-control" id="content" name="content" placeholder="{{ $post->content }}" required>
+            <input type="text" class="form-control" id="content" name="content" value="{{ $post->content }}" required>
         </div>
 
         <div class="mb-3">
