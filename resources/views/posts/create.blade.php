@@ -1,6 +1,4 @@
-@extends('layouts.postsLayout')
-
-@section('content')
+<x-app-layout>
     <form action="{{ route('posts.store') }}" method="POST">
         @csrf
 
@@ -31,4 +29,4 @@
             Cancel
         </a>
     </form>
-@endsection
+</x-app-layout>

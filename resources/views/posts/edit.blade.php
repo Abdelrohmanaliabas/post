@@ -1,6 +1,4 @@
-@extends('layouts.postsLayout')
-
-@section('content')
+<x-app-layout>
     <form action="{{ route('posts.update', $post->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -34,4 +32,4 @@
             Cancel
         </a>
     </form>
-@endsection
+</x-app-layout>

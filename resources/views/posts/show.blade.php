@@ -1,6 +1,4 @@
-@extends('layouts.postsLayout')
-@section('content')
-
+<x-app-layout>
     <div class="container mt-5">
         <h1>{{ $post->title }}</h1>
         <p>{{ $post->content }}</p>
@@ -18,4 +16,4 @@
         </div>
     </div>
 
-@endsection
+</x-app-layout>

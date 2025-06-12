@@ -1,13 +1,13 @@
 
-@extends('layouts.postsLayout')
-@section('content')     
-     <center>
+<x-app-layout>
+
+     <center >
             <button type="button" class="btn btn-success" onclick="window.location='{{ route('posts.create') }}'">
                 Create new post
             </button>
 
         </center>
-    <table class="table m-5">
+    <table class="table m-2">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -50,4 +50,6 @@
     <div class="d-flex justify-content-center">
         {{ $posts->links() }}
     </div>
-@endsection
+
+
+</x-app-layout>
