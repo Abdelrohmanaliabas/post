@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePost;
 use App\Http\Requests\UpdatePost;
+use App\Http\Services\IPostServices;
 use App\Models\User;
-use App\PostTrait;
 
 class PostController extends Controller
 {
-    use PostTrait;
-
+    public function __construct(protected IPostServices $postService) {}
     public function index()
     {
-        $posts = $this->getAllposts();
+        $posts = $this->postService->getAllPosts();
 
         return view('posts.index', [
             'posts' => $posts
@@ -35,7 +34,7 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
-        $this->createPost($data);
+        $this->postService->createPost($data);
 
         return $this->redirectToIndex();
     }
@@ -43,7 +42,7 @@ class PostController extends Controller
 
     public function show(string $id)
     {
-        $post = $this->getPostById($id);
+        $post = $this->postService->getPostById($id);
 
         return view('posts.show', [
             'post' => $post
@@ -53,7 +52,7 @@ class PostController extends Controller
 
     public function edit(string $id)
     {
-        $post = $this->getPostById($id);
+        $post = $this->postService->getPostById($id);
 
         $users = User::all();
 
@@ -71,7 +70,7 @@ class PostController extends Controller
 
         $data = $request->all();
 
-        $this->updatePost($id, $data);
+        $this->postService->updatePost($id, $data);
 
         return $this->redirectToIndex();
     }
@@ -79,10 +78,14 @@ class PostController extends Controller
 
     public function destroy(string $id)
     {
-        $post = $this->getPostById($id);
+        $post = $this->postService->getPostById($id);
 
         $post->delete();
 
         return $this->redirectToIndex();
+    }
+    protected function redirectToIndex()
+    {
+        return redirect()->route('posts.index')->with('success', 'Post successfully saved.');
     }
 }
